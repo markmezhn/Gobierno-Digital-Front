@@ -39,17 +39,6 @@ export default {
     },
     computed: {
         ...mapState({ name: state => state.auth.username, roles: state => state.auth.roles })
-    },
-    mounted(){
-        console.log(this.name);
-    },
-    data(){
-        return {
-
-        }
-    },
-    validations: {
-
     }
 }
 </script>

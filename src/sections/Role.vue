@@ -12,7 +12,7 @@
                                 <b class="text-center">Listado de roles</b>
                             </div>
                            <div class="row">
-                               <div class="col text-right">
+                               <div v-if="isAdmin" class="col text-right">
                                   <button @click="$router.push('/home/create-role')" class="btn btn-primary">Crear</button>
                                </div>
                             </div>
@@ -39,10 +39,10 @@
                                                 <td>{{ role.slug }}</td>
                                                 <td>{{ role.description }}</td>
                                                 <td class="text-center">
-                                                    <button class="btn-table btn-warning" @click="editRole(role.id)"><i class="fa fa-pencil"></i></button>
+                                                    <button v-if="isAdmin" class="btn-table btn-warning" @click="editRole(role.id)"><i class="fa fa-pencil"></i></button>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn-table btn-danger" @click="toggleDelete(role.id)"><i class="fa fa-trash"></i></button>
+                                                    <button v-if="isAdmin" class="btn-table btn-danger" @click="toggleDelete(role.id)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -120,7 +120,8 @@ export default {
             }
     },
     computed: {
-        ...mapGetters({ roles: "getRoles" })
+        ...mapGetters({ roles: "getRoles" }),
+        ...mapState({ isAdmin: state => state.auth.isAdmin })
     },
     validations: {
         

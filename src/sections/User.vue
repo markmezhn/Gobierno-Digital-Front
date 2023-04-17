@@ -12,7 +12,7 @@
                                 <b class="text-center">Listado de usuarios</b>
                             </div>
                            <div class="row">
-                               <div class="col text-right">
+                               <div v-if="isAdmin" class="col text-right">
                                   <button @click="$router.push('/home/create-user')" class="btn btn-primary">Crear</button>
                                </div>
                             </div>
@@ -50,10 +50,10 @@
                                                     </p>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn-table btn-warning" @click="editUser(user.id)"><i class="fa fa-pencil"></i></button>
+                                                    <button v-if="isAdmin" class="btn-table btn-warning" @click="editUser(user.id)"><i class="fa fa-pencil"></i></button>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn-table btn-danger" @click="toggleDelete(user.id)"><i class="fa fa-trash"></i></button>
+                                                    <button v-if="isAdmin" class="btn-table btn-danger" @click="toggleDelete(user.id)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -108,7 +108,7 @@
     <!-- </div> -->
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { mdbModal, mdbModalHeader, mdbModalBody, mdbModalFooter, mdbBtn } from "mdbvue";
 import Swal from 'sweetalert2';
 
@@ -131,7 +131,8 @@ export default {
             }
     },
     computed: {
-        ...mapGetters({ users: "getUsers" })
+        ...mapGetters({ users: "getUsers" }),
+        ...mapState({ isAdmin: state => state.auth.isAdmin })
     },
     validations: {
         

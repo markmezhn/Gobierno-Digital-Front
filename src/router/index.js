@@ -36,6 +36,7 @@ export default new Router({
                   let obj = {};
                   obj.access_token = localStorage.getItem('access_token');
                   obj.email = localStorage.getItem('username');
+                  obj.isAdmin = localStorage.getItem('isAdmin');
                   store.commit("setAuthenticated", obj);
                   next();
               } else {

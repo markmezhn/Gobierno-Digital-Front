@@ -6,7 +6,8 @@ export default {
         accessToken: null,
         username: null,
         roles: null,
-        apiUrl: ''
+        apiUrl: '',
+        isAdmin: null
     },
     getters: {
         api(state, getters, rootState) {
@@ -31,11 +32,16 @@ export default {
             localStorage.setItem('access_token', header.token);
             state.accessToken = header.token;
 
-            state.username = header.name;
-            localStorage.setItem('username', header.name);
+/*             state.username = header.name;
+            localStorage.setItem('username', header.name); */
 
             state.roles = header.roles;
+        
             localStorage.setItem('roles', header.roles);
+
+            state.isAdmin = header.isAdmin;
+
+            localStorage.setItem('isAdmin', header.isAdmin);
 
             state.authenticated = header.authenticated;
         },
