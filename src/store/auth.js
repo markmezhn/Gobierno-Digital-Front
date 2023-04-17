@@ -5,7 +5,7 @@ export default {
         authenticated: false,
         accessToken: null,
         username: null,
-        role: null,
+        roles: null,
         apiUrl: ''
     },
     getters: {
@@ -21,6 +21,9 @@ export default {
         },
         getUserName(state){
             return state.username;
+        },
+        getRolesuser(state){
+            return state.roles;
         }
     },
     mutations: {
@@ -31,8 +34,8 @@ export default {
             state.username = header.name;
             localStorage.setItem('username', header.name);
 
-            state.role = header.role;
-            localStorage.setItem('role', header.role);
+            state.roles = header.roles;
+            localStorage.setItem('roles', header.roles);
 
             state.authenticated = header.authenticated;
         },
@@ -49,7 +52,7 @@ export default {
             let formData = {};
             formData.email = credentials.email;
             formData.password = credentials.password;
-            let response = await Axios.post(`http://localhost:8000/login`, formData, {
+            let response = await Axios.post(`http://127.0.0.1:8000/api/v1/login`, formData, {
                 'Content-Type': 'application/json'
             });
             

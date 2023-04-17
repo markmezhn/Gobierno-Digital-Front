@@ -19,12 +19,6 @@
                                      <validation-error :validation="$v.email"></validation-error> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Rol</label>
-                                    <select class="form-control">
-                                        <option value="" selected>{{ role_name }}</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
                                     <label for="">Password</label>
                                     <input type="password" v-model="password" class="form-control" />
                                     <validation-error :validation="$v.password"></validation-error>
@@ -65,7 +59,6 @@ export default {
         return {
                 id: "",
                 email: "",
-                role_name: "",
                 name: "",
                 password: "",
                 cpassword: "",
@@ -122,8 +115,6 @@ export default {
             let user = await this.getUser(this.$route.params.id);
             this.id = user.id;
             this.email = user.email;
-            this.role_id = user.role_id;
-            this.role_name = user.role.name;
             this.name = user.name;
         }
     }

@@ -5,32 +5,27 @@
                 <div class="card mt-5">
                     <div class="card-body m-5">
                             <div class="col text-center mb-3">
-                                <b class="text-center">Llene los datos para crear un nuevo usuario</b>
+                                <b class="text-center">Llene los datos para crear un nuevo rol de usuario</b>
                             </div>
                             <form>
                                 <div class="form-group">
-                                    <label for="">Nombre completo</label>
+                                    <label for="">Nombre de rol</label>
                                     <input type="text" v-model="name" class="form-control" />
                                     <validation-error :validation="$v.name"></validation-error>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">E-mail</label>
-                                    <input type="text" v-model="email" class="form-control" />
-                                     <validation-error :validation="$v.email"></validation-error> 
+                                    <label for="">Slug</label>
+                                    <input type="text" v-model="slug" class="form-control" />
+                                     <validation-error :validation="$v.slug"></validation-error> 
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Password</label>
-                                    <input type="password" v-model="password" class="form-control" />
-                                    <validation-error :validation="$v.password"></validation-error>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Confirme password</label>
-                                    <input type="password" v-model="cpassword" class="form-control" />
-                                    <validation-error :validation="$v.cpassword"></validation-error>
+                                    <label for="">Descripción</label>
+                                    <input type="text" v-model="description" class="form-control" />
+                                     <validation-error :validation="$v.description"></validation-error> 
                                 </div>
                                 <div class="text-center mt-4">
-                                    <mdb-btn color="danger" @click.native.prevent="$router.push('/home/users')">Cancelar</mdb-btn>
-                                    <mdb-btn color="indigo" v-if="!waitingResponse" @click.native.prevent="addUser">Crear</mdb-btn>
+                                    <mdb-btn color="danger" @click.native.prevent="$router.push('/home/roles')">Cancelar</mdb-btn>
+                                    <mdb-btn color="indigo" v-if="!waitingResponse" @click.native.prevent="addRole">Crear</mdb-btn>
                                 </div>
                             </form>
                     </div>
@@ -41,55 +36,50 @@
 </template>
 <script>
 import { mapActions } from "vuex";
-import { required, email, sameAs } from  "vuelidate/lib/validators"; 
+import { required } from  "vuelidate/lib/validators"; 
 import ValidationError from '@/components/ValidationError';
 import { mdbBtn } from "mdbvue";
 import Swal from 'sweetalert2';
 
 export default {
-    name: "CreateUser",
+    name: "CreateRole",
     components: {
         ValidationError,
         mdbBtn
     },
     data(){
         return {
-                email: "",
                 name: "",
-                password: "",
-                cpassword: "",
+                slug: "",
+                description: "",
                 waitingResponse: false
             }
     },
     validations: {
-        email: {
-            required,
-            email
-        },
         name: {
             required
         },
-        password: {
+        slug: {
             required
         },
-        cpassword: {
-            sameAs: sameAs('password')
+        description: {
+            required
         }
     },
     methods: {
-        ...mapActions(["createUser"]),
-        async addUser(){
+        ...mapActions(["createRole"]),
+        async addRole(){
             this.$v.$touch();
             if(!this.$v.$invalid){ 
                 try{
                     this.waitingResponse = true;
-                    let response = await this.createUser({ email: this.email, name: this.name, password: this.password, cpassword: this.cpassword });
+                    let response = await this.createRole({ name: this.name, slug: this.slug, description: this.description });
                     if(response.data.success){
                         this.waitingResponse = false;
-                        this.$router.push("/home/users");
+                        this.$router.push("/home/roles");
                         Swal.fire(
-                            '¡Usuario añadido!',
-                            'Usted ha dado de alta un nuevo usuario',
+                            'Rol de usuario añadido!',
+                            'Usted ha dado de alta un nuevo rol',
                             'success'
                         );
                     }

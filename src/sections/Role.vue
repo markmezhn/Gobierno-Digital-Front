@@ -9,11 +9,11 @@
                         <!-- Subscription mform -->
                         <div class="container-fluid">
                             <div class="row">
-                                <b class="text-center">Listado de usuarios</b>
+                                <b class="text-center">Listado de roles</b>
                             </div>
                            <div class="row">
                                <div class="col text-right">
-                                  <button @click="$router.push('/home/create-user')" class="btn btn-primary">Crear</button>
+                                  <button @click="$router.push('/home/create-role')" class="btn btn-primary">Crear</button>
                                </div>
                             </div>
                             <div class="row" style="overflow-x:auto;">
@@ -23,9 +23,9 @@
                                         <!--Table head-->
                                         <thead class="blue-grey lighten-4">
                                         <tr>
-                                            <th>Nombre de usuario</th>
-                                            <th>E-mail</th>
-                                            <th>Rol</th>
+                                            <th>Nombre</th>
+                                            <th>Slug</th>
+                                            <th>Descripción</th>
                                             <th class="text-center">Modificar</th>
                                             <th class="text-center">Eliminar</th>
                                         </tr>
@@ -34,26 +34,15 @@
 
                                         <!--Table body-->
                                         <tbody>
-                                            <tr v-for="user in users" :key="user.id">
-                                                <td>{{ user.name }}</td>
-                                                <td>{{ user.email }}</td>
-                                                <td>  
-                                                    <p v-if="user.roles.length > 0">
-                                                        <b v-for="(item, index) in user.roles" :key="index">
-                                                            {{ item.role.name }}
-                                                        </b> 
-                                                    </p>                           
-                                                    <p v-else>
-                                                        <b>
-                                                            Sin roles asignados
-                                                        </b>
-                                                    </p>
+                                            <tr v-for="role in roles" :key="role.id">
+                                                <td>{{ role.name }}</td>
+                                                <td>{{ role.slug }}</td>
+                                                <td>{{ role.description }}</td>
+                                                <td class="text-center">
+                                                    <button class="btn-table btn-warning" @click="editRole(role.id)"><i class="fa fa-pencil"></i></button>
                                                 </td>
                                                 <td class="text-center">
-                                                    <button class="btn-table btn-warning" @click="editUser(user.id)"><i class="fa fa-pencil"></i></button>
-                                                </td>
-                                                <td class="text-center">
-                                                    <button class="btn-table btn-danger" @click="toggleDelete(user.id)"><i class="fa fa-trash"></i></button>
+                                                    <button class="btn-table btn-danger" @click="toggleDelete(role.id)"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -95,7 +84,7 @@
                 </mdb-modal-body>
                 <!--Footer-->
                 <mdb-modal-footer class="justify-content-center">
-                <mdb-btn color="danger" @click.native="delUser">
+                <mdb-btn color="danger" @click.native="delRole">
                     BORRAR
                     <i class="fas fa-gem text-white ml-1"></i>
                 </mdb-btn>
@@ -131,33 +120,33 @@ export default {
             }
     },
     computed: {
-        ...mapGetters({ users: "getUsers" })
+        ...mapGetters({ roles: "getRoles" })
     },
     validations: {
         
     },
     methods: {
-        ...mapActions(["getUsers", "deleteUser"]),
+        ...mapActions(["getRoles", "deleteRole"]),
         async getData(){
-            await this.getUsers();
+            await this.getRoles();
         },
-        editUser(user_id){
-            this.$router.push(`/home/edit-user/${user_id}`)
+        editRole(role_id){
+            this.$router.push(`/home/edit-role/${role_id}`)
         },
-        toggleDelete(user_id){
-            if(user_id){
-                this.selected = user_id;
+        toggleDelete(role_id){
+            if(role_id){
+                this.selected = role_id;
             }
             this.showModalDelete = !this.showModalDelete;
         },
-        async delUser(){
+        async delRole(){
             try{
-                let response = await this.deleteUser({ id: this.selected });
+                let response = await this.deleteRole({ id: this.selected });
                 if(response.data.success){
                     this.getData();
                     this.toggleDelete();
                      Swal.fire(
-                            '¡Usuario eliminado!',
+                            'Rol eliminado!',
                             response.data.success,
                             'success'
                         );

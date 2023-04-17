@@ -14,7 +14,14 @@
                         <!-- Subscription mform -->
                         BIENVENIDO <b>{{ name }}</b>
                         <br>
-                        <p class="">Su rol es: <b>{{ role }}</b></p>  
+                        <p v-if="roles.length > 0">Su rol es: 
+                            <b v-for="(item, index) in roles" :key="index">
+                                {{ item.role.name }}
+                            </b>
+                        </p>  
+                        <b v-else>
+                            Sin roles asignados
+                        </b>
                         <!-- Subscription form -->
                     </div>
                 </div>
@@ -31,7 +38,7 @@ export default {
     components: {
     },
     computed: {
-        ...mapState({ name: state => state.auth.username, role: state => state.auth.role })
+        ...mapState({ name: state => state.auth.username, roles: state => state.auth.roles })
     },
     mounted(){
         console.log(this.name);

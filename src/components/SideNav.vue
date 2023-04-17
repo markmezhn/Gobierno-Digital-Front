@@ -1,7 +1,7 @@
 <template>
   <div class="white-skin mdb-admin-sidenav">
     <mdb-side-nav
-      logo="/favicon.png"
+      logo="https://michoacan.gob.mx/cdn/img/logos/dependencias/finanzas.svg"
       sideNavClass="sn-bg-4"
       mask="strong"
       :OpenedFromOutside.sync="toggle"
@@ -15,13 +15,13 @@
       </li>
       <li>
         <mdb-side-nav-nav>
-          <mdb-side-nav-cat name="Sistema" icon="tachometer-alt" v-if="role == 'Admin'">
+          <mdb-side-nav-cat name="Sistema" icon="tachometer-alt">
             <mdb-side-nav-item to="/home/users" @click.native="width < 1440 && toggleSideNav(false)">
               Usuarios 
             </mdb-side-nav-item>
-            <!-- <mdb-side-nav-item to="/home/roles" @click.native="width < 1440 && toggleSideNav(false)">
+            <mdb-side-nav-item to="/home/roles" @click.native="width < 1440 && toggleSideNav(false)">
               Roles 
-            </mdb-side-nav-item> -->
+            </mdb-side-nav-item> 
           </mdb-side-nav-cat>
         </mdb-side-nav-nav>
       </li>

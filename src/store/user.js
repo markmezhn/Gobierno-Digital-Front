@@ -5,7 +5,6 @@ export default {
     state: {
         username: '',
         email: '',
-        role: '',
         name: '',
         users: []
     },
@@ -15,9 +14,6 @@ export default {
         },
         getUsername: (state) => {
             return state.username;
-        },
-        getRole: (state) => {
-            return state.role;
         },
         getName: (state) => {
             return state.name;
@@ -32,9 +28,6 @@ export default {
         },
         _setUsername: (state, username) => {
             state.username = username;
-        },
-        _setRole: (state, role) => {
-            state.role = role;
         },
         _setName: (state, name) => {
             state.name = name;

@@ -9,6 +9,11 @@ const User = () => import('@/sections/User');
 const CreateUser = () => import('@/sections/user/Create');
 const EditUser = () => import('@/sections/user/Edit');
 const ChangePwd = () => import('@/sections/ChangePwd');
+const Role = () => import('@/sections/Role');
+const CreateRole = () => import('@/sections/role/Create');
+const EditRole = () => import('@/sections/role/Edit');
+/* const CreateUser = () => import('@/sections/user/Create');
+const EditUser = () => import('@/sections/user/Edit'); */
 
 Vue.use(Router)
 
@@ -58,7 +63,22 @@ export default new Router({
           path: '/home/edit-user/:id',
           name: 'Modificar Usuario',
           component: EditUser
-        }
+        },
+        {
+          path: '/home/roles',
+          name: 'Roles',
+          component: Role
+        },
+        {
+          path: '/home/create-role',
+          name: 'Crear Rol',
+          component: CreateRole
+        },
+        {
+          path: '/home/edit-role/:id',
+          name: 'Modificar Rol',
+          component: EditRole
+        },
       ]
     },
     {
