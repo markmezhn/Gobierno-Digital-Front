@@ -27,6 +27,7 @@
                                             <th>E-mail</th>
                                             <th>Rol</th>
                                             <th class="text-center">Modificar</th>
+                                            <th class="text-center">Asignar Rol</th>
                                             <th class="text-center">Eliminar</th>
                                         </tr>
                                         </thead>
@@ -51,6 +52,9 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <button v-if="isAdmin" class="btn-table btn-warning" @click="editUser(user.id)"><i class="fa fa-pencil"></i></button>
+                                                </td>
+                                                <td class="text-center">
+                                                    <button v-if="isAdmin" class="btn-table btn-info" @click="toggleAssignRole(user.id)"><i class="fa fa-user"></i></button>
                                                 </td>
                                                 <td class="text-center">
                                                     <button v-if="isAdmin" class="btn-table btn-danger" @click="toggleDelete(user.id)"><i class="fa fa-trash"></i></button>
@@ -104,6 +108,52 @@
                 >
                 </mdb-modal-footer>
             </mdb-modal>
+
+                        <!--Grid column-->
+            <mdb-modal
+                size="info"
+                position="notify"
+                :show="showModalAssignRole"
+                @close="toggleAssignRole"
+            >
+                <!--Header-->
+                <mdb-modal-header class="text-white">
+                <p class="heading lead">Asignar rol a usuario</p>
+                </mdb-modal-header>
+                <!--Body-->
+                <mdb-modal-body>
+                <div class="row">
+                    <div class="col text-center">
+                        </div>
+                    <div class="col-12">
+                        <p class="text-center">
+                            Elija un rol para asignar a este usuario
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="">Rol</label>
+                            <select v-model="role_id" class="form-control">
+                                <option value="" disabled selected>Seleccione rol</option>
+                                <option :value="role.id" v-for="role in roles" v-bind:key="role.id">
+                                    {{ role.name }}
+                                </option>
+                            </select> 
+                        </div>
+                    </div>
+                </div>
+                </mdb-modal-body>
+                <!--Footer-->
+                <mdb-modal-footer class="justify-content-center">
+                <mdb-btn color="info" @click.native="assignRole">
+                    ASIGNAR ROL
+                    <i class="fas fa-gem text-white ml-1"></i>
+                </mdb-btn>
+                <mdb-btn outline="info" @click.native="toggleAssignRole"
+                    >CANCELAR</mdb-btn
+                >
+                </mdb-modal-footer>
+            </mdb-modal>
         </div>
     <!-- </div> -->
 </template>
@@ -123,24 +173,27 @@ export default {
     },
     mounted(){
         this.getData();
+        this.getRoles();
     },
     data(){
         return {
                 showModalDelete: false,
-                selected: ""
+                showModalAssignRole: false,
+                selected: "",
+                role_id: ""
             }
     },
     computed: {
-        ...mapGetters({ users: "getUsers" }),
+        ...mapGetters({ users: "getUsers", roles: "getRoles" }),
         ...mapState({ isAdmin: state => state.auth.isAdmin })
     },
-    validations: {
-        
-    },
     methods: {
-        ...mapActions(["getUsers", "deleteUser"]),
+        ...mapActions(["getUsers", "deleteUser", "getRoles", "assignRoleUser"]),
         async getData(){
             await this.getUsers();
+        },
+        async getRoles(){
+            await this.getRoles();
         },
         editUser(user_id){
             this.$router.push(`/home/edit-user/${user_id}`)
@@ -150,6 +203,13 @@ export default {
                 this.selected = user_id;
             }
             this.showModalDelete = !this.showModalDelete;
+        },
+        toggleAssignRole(user_id){
+            if(user_id){
+                this.selected = user_id;
+            }
+            this.showModalAssignRole = !this.showModalAssignRole;
+            this.role_id = "";
         },
         async delUser(){
             try{
@@ -162,6 +222,38 @@ export default {
                             response.data.success,
                             'success'
                         );
+                }
+            } catch(e){
+                    let emessage = "";
+                    if(e.response){
+                        emessage = e.response.data.error;
+                    }
+                    Swal.fire(
+                        'Error!',
+                        emessage,
+                        'error'
+                    );
+            }
+        },
+        async assignRole(){
+            try{
+                if(this.role_id != ""){
+                    let response = await this.assignRoleUser({ user_id: this.selected, role_id: this.role_id });
+                    if(response.data.success){
+                        this.getData();
+                        this.toggleAssignRole();
+                         Swal.fire(
+                                '¡Se ha asignado el rol al usuario!',
+                                response.data.success,
+                                'success'
+                            );
+                    }
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'Por favor elija un rol para asignar',
+                        'error'
+                    );
                 }
             } catch(e){
                     let emessage = "";

@@ -8,12 +8,9 @@ const HomeScreen = () => import('@/sections/HomeScreen');
 const User = () => import('@/sections/User');
 const CreateUser = () => import('@/sections/user/Create');
 const EditUser = () => import('@/sections/user/Edit');
-const ChangePwd = () => import('@/sections/ChangePwd');
 const Role = () => import('@/sections/Role');
 const CreateRole = () => import('@/sections/role/Create');
 const EditRole = () => import('@/sections/role/Edit');
-/* const CreateUser = () => import('@/sections/user/Create');
-const EditUser = () => import('@/sections/user/Edit'); */
 
 Vue.use(Router)
 
@@ -81,11 +78,6 @@ export default new Router({
           component: EditRole
         },
       ]
-    },
-    {
-      path: '/change-password/:id',
-      name: 'ChangePwd',
-      component: ChangePwd
     }
   ]
 })
