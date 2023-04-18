@@ -1,4 +1,3 @@
-import Axios from "axios";
 const userUrl = `/user`;
 
 export default {
@@ -57,10 +56,8 @@ export default {
             let response = await context.rootGetters.api.delete(`${userUrl}/${data.id}`);
             return response;
         },
-        async changePwd({ rootState }, data){
-            let response = await Axios.post(`${rootState.apiUrl}/api/v1/change-password`, data, {
-                'Content-type': 'application/json'
-            });
+        async assignRoleUser(context, data){
+            let response = await context.rootGetters.api.post(`${userUrl}/assign-role`, data);
             return response;
         }
     }
